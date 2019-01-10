@@ -8,7 +8,7 @@ export default class ModalButton extends React.Component {
 
     render() {
         return (
-            <Button onClick={this.props.handleModalButtonClick}><Glyphicon glyph="plus"/> Create Device</Button>
+            <Button onClick={this.props.handleModalButtonClick}><Glyphicon glyph="plus"/> {this.props.text}</Button>
         );
     }
 }

@@ -12,13 +12,11 @@ export default class Navigation extends Component {
     setContractsActive = event => {
         event.preventDefault();
         this.props.changePage("contracts");
-        return false;
     }
 
     setDevicesActive = event => {
         event.preventDefault();
         this.props.changePage("devices");
-        return false;
     }
 
     render() {

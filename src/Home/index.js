@@ -118,7 +118,7 @@ export default class Home extends React.Component {
                             <FormControl.Feedback/>
                         </FormGroup>
                     </form>
-                    <ModalButton />         
+                    <ModalButton text="Create Contract"/>         
                 </div>
                 <Table condensed hover responsive>
                     <thead>
@@ -162,7 +162,7 @@ export default class Home extends React.Component {
                             <FormControl.Feedback/>
                         </FormGroup>
                     </form>
-                    <ModalButton />
+                    <ModalButton text="Create Device"/>
                 </div>
                 <Table condensed hover responsive>
                     <thead>
