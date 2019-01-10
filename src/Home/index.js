@@ -1,6 +1,7 @@
 import React from "react";
 import { PageHeader, Table, Button, Glyphicon, FormControl, FormGroup } from "react-bootstrap";
 import ModalButton from "../ModalButton";
+import Lander from "../Lander";
 import Api from "../Api";
 import "./Home.css";
 
@@ -18,6 +19,7 @@ export default class Home extends React.Component {
         };
     }
 
+    
     async componentDidMount() {
         if (!this.props.isAuthenticated) {
             return;
@@ -35,7 +37,8 @@ export default class Home extends React.Component {
         this.setState({ isLoading: false });
     }
 
-    filterDevices() {
+
+    searchDevice() {
         let input = this.state.searchValue;
 
         if (input !== "") {
@@ -46,15 +49,25 @@ export default class Home extends React.Component {
         return this.state.devices;
     }
 
+
+    searchContract() {
+        let input = this.state.searchValue;
+
+        if (input !== "") {
+            return this.state.contracts.filter(contract => {
+                return contract.contractID.toUpperCase().indexOf(input.toUpperCase()) > -1;
+            });
+        }
+        return this.state.contracts;
+    }
+
+
     handleChange = event => {
         this.setState({
             [event.target.id]: event.target.value,
         });
     }
 
-    handleModalButtonClick() {
-
-    }
 
     renderDevicesList(devices) {
         return [{}].concat(devices).map(
@@ -71,6 +84,47 @@ export default class Home extends React.Component {
                 </tr>
         );
     }
+
+
+    renderDevices() {
+        const devices = this.searchDevice();
+
+        return (
+            <div className="devices">
+                <PageHeader>IoT Devices Management</PageHeader>
+                <div>
+                    <form className="search-form">
+                        <FormGroup controlId="searchValue">
+                            <FormControl
+                                type = "text"
+                                value = {this.state.searchValue}
+                                placeholder = "Device ID / IoTbx00000000001"
+                                onChange = {this.handleChange}
+                            />
+                            <FormControl.Feedback/>
+                        </FormGroup>
+                    </form>
+                    <ModalButton text="Create Device"/>
+                </div>
+                <Table condensed hover responsive>
+                    <thead>
+                        <tr>
+                            <th>Device ID</th>
+                            <th>Host Name</th>
+                            <th>Private Key</th>
+                            <th>Contract ID</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {!this.state.isLoading && this.renderDevicesList(devices)}
+                    </tbody>
+                </Table>
+            </div>
+        );
+    }
+
 
     renderContractsList(contracts) {
         return [{}].concat(contracts).map(
@@ -93,16 +147,10 @@ export default class Home extends React.Component {
         )
     }
 
-    renderLander() {
-        return (
-            <div className="lander">
-                <h1>Matoffo's IoT Devices</h1>
-                <p>Device & Contracts manageent app</p>
-            </div>
-        );
-    }
 
     renderContracts() {
+        const contracts = this.searchContract();
+
         return (
             <div className="devices">
                 <PageHeader>Contracts Management</PageHeader>
@@ -137,56 +185,18 @@ export default class Home extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {!this.state.isLoading && this.renderContractsList(this.state.contracts)}
+                        {!this.state.isLoading && this.renderContractsList(contracts)}
                     </tbody>
                 </Table>
             </div>
         )
     }
 
-    renderDevices() {
-        const filteredDevices = this.filterDevices();
-
-        return (
-            <div className="devices">
-                <PageHeader>IoT Devices Management</PageHeader>
-                <div>
-                    <form className="search-form">
-                        <FormGroup controlId="searchValue">
-                            <FormControl
-                                type = "text"
-                                value = {this.state.searchValue}
-                                placeholder = "Device ID / IoTbx00000000001"
-                                onChange = {this.handleChange}
-                            />
-                            <FormControl.Feedback/>
-                        </FormGroup>
-                    </form>
-                    <ModalButton text="Create Device"/>
-                </div>
-                <Table condensed hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Device ID</th>
-                            <th>Host Name</th>
-                            <th>Private Key</th>
-                            <th>Contract ID</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {!this.state.isLoading && this.renderDevicesList(filteredDevices)}
-                    </tbody>
-                </Table>
-            </div>
-        );
-    }
 
     render() {
         return (
             <div className="Home">
-                {this.props.isAuthenticated ? (this.props.currentPage === "devices" ? this.renderDevices() : this.renderContracts()) : this.renderLander()}
+                {this.props.isAuthenticated ? (this.props.currentPage === "devices" ? this.renderDevices() : this.renderContracts()) : <Lander />}
             </div>
         );
     }
