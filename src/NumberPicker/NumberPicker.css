@@ -1,0 +1,83 @@
+.number-input::-webkit-inner-spin-button,
+.number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input {
+  -moz-appearance: textfield;
+  font-family: "Roboto", sans-serif;
+}
+
+.number-wrapper {
+  position: relative;
+  height: 30px;
+  width: 70px;
+}
+
+.number-input {
+  height: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e0dcdb;
+  border-radius: 3px 0 0 3px;
+  font-size: 14px;
+  text-align: center;
+  width: calc(100% - 27px);
+  margin-left: 3px;
+  padding: 0 13px 0 0;
+}
+
+.input-button {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border: 1px solid #E3E3E3;
+  color: #d65453;
+  text-align: center;
+  line-height: 15px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.input-button:hover {
+  background: #FAFAFA;
+}
+
+.input-button.add {
+  top: 0;
+  right: 10px;
+  border-radius: 0 3px 0 0;
+  border-bottom: none;
+}
+
+.input-button.add:after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  border-top: 1px solid #4d4242;
+  border-left: 1px solid #4d4242;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.input-button.remove {
+  bottom: 0;
+  right: 10px;
+  border-radius: 0 0 3px 0;
+}
+
+.input-button.remove:after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  border-bottom: 1px solid #4d4242;
+  border-right: 1px solid #4d4242;
+  transform: rotate(45deg);
+  pointer-events: none;
+}

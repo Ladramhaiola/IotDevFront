@@ -1,14 +1,11 @@
 import React from 'react';
 import { Button, Glyphicon } from "react-bootstrap";
 
-export default class ModalButton extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <Button onClick={this.props.handleModalButtonClick}><Glyphicon glyph="plus"/> {this.props.text}</Button>
-        );
-    }
-}
+export default ({
+    onClick,
+    text,
+    ...props
+}) =>
+    <Button {...props} onClick={onClick}>
+        <Glyphicon glyph="plus"/> {text}
+    </Button>;

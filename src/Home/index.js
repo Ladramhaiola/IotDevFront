@@ -1,7 +1,10 @@
 import React from "react";
 import { PageHeader, Table, Button, Glyphicon, FormControl, FormGroup } from "react-bootstrap";
 import ModalButton from "../ModalButton";
+import SearchForm from "../SearchForm";
 import Lander from "../Lander";
+import CreateContractModal from "../Modals/CreateContractModal";
+import CreateDeviceModal from "../Modals/CreateDeviceModal";
 import Api from "../Api";
 import "./Home.css";
 
@@ -10,16 +13,22 @@ export default class Home extends React.Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.toggleCreateContractModal = this.toggleCreateContractModal.bind(this);
+        this.toggleCreateDeviceModal = this.toggleCreateDeviceModal.bind(this);
 
         this.state = {
             isLoading: true,
             devices: [],
             contracts: [],
             searchValue: "",
+            modal: {
+                createContract: false,
+                createDevice: false,
+            },
         };
     }
 
-    
+
     async componentDidMount() {
         if (!this.props.isAuthenticated) {
             return;
@@ -69,6 +78,19 @@ export default class Home extends React.Component {
     }
 
 
+    toggleCreateContractModal() {
+        const { modal } = this.state;
+        modal['createContract'] = !modal['createContract'];
+        this.setState({ modal });
+    }
+
+    toggleCreateDeviceModal() {
+        const { modal } = this.state;
+        modal['createDevice'] = !modal['createDevice'];
+        this.setState({ modal });
+    }
+
+
     renderDevicesList(devices) {
         return [{}].concat(devices).map(
             (device, i) =>
@@ -93,18 +115,14 @@ export default class Home extends React.Component {
             <div className="devices">
                 <PageHeader>IoT Devices Management</PageHeader>
                 <div>
-                    <form className="search-form">
-                        <FormGroup controlId="searchValue">
-                            <FormControl
-                                type = "text"
-                                value = {this.state.searchValue}
-                                placeholder = "Device ID / IoTbx00000000001"
-                                onChange = {this.handleChange}
-                            />
-                            <FormControl.Feedback/>
-                        </FormGroup>
-                    </form>
-                    <ModalButton text="Create Device"/>
+                    <SearchForm 
+                        controlId="searchValue"
+                        value = {this.state.searchValue}
+                        placeholder = "Device ID / IoTbx00000000001"
+                        onChange = {this.handleChange}
+                    />
+                    <ModalButton onClick={this.toggleCreateDeviceModal} text="Create Device"/>
+                    {this.state.modal.createDevice ? <CreateDeviceModal toggle={this.toggleCreateDeviceModal} /> : null}
                 </div>
                 <Table condensed hover responsive>
                     <thead>
@@ -131,7 +149,7 @@ export default class Home extends React.Component {
             (contract, i) =>
                 i === 0
                 ? null
-                : <tr>
+                : <tr key={i}>
                     <td>{contract.contractID}</td>
                     <td>{contract.toDeliver}</td>
                     <td>{contract.deviceID}</td>
@@ -155,18 +173,14 @@ export default class Home extends React.Component {
             <div className="devices">
                 <PageHeader>Contracts Management</PageHeader>
                 <div>
-                    <form className="search-form">
-                        <FormGroup controlId="searchValue">
-                            <FormControl
-                                type = "text"
-                                value = {this.state.searchValue}
-                                placeholder = "Contract ID / CNTRCT0412"
-                                onChange = {this.handleChange}
-                            />
-                            <FormControl.Feedback/>
-                        </FormGroup>
-                    </form>
-                    <ModalButton text="Create Contract"/>         
+                    <SearchForm 
+                        controlId="searchValue"
+                        value = {this.state.searchValue}
+                        placeholder = "Contract ID / CNTRCT0412"
+                        onChange = {this.handleChange}
+                    />
+                    <ModalButton onClick={this.toggleCreateContractModal} text="Create Contract"/>
+                    {this.state.modal.createContract ? <CreateContractModal toggle = {this.toggleCreateContractModal}/> : null}
                 </div>
                 <Table condensed hover responsive>
                     <thead>

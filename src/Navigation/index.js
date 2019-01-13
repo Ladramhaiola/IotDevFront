@@ -45,9 +45,9 @@ export default class Navigation extends Component {
                     <Nav pullRight>
                         {isAuthenticated
                         ? <Fragment>
-                            <LinkContainer to="/settings">
+                            {/* <LinkContainer to="/settings">
                                 <NavItem>Settings</NavItem>
-                            </LinkContainer>
+                            </LinkContainer> */}
                             <NavItem onClick={handleLogout}>Logout</NavItem>
                         </Fragment>
                         : <Fragment>
