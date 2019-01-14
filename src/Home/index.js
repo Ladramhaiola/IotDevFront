@@ -5,8 +5,12 @@ import SearchForm from "../SearchForm";
 import Lander from "../Lander";
 import CreateContractModal from "../Modals/CreateContractModal";
 import CreateDeviceModal from "../Modals/CreateDeviceModal";
+import EditContractModal from "../Modals/EditContractModal";
+import EditDeviceModal from "../Modals/EditDeviceModal";
+import ArchiveContract from "../Modals/ArchiveContract";
 import Api from "../Api";
 import "./Home.css";
+
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -15,6 +19,9 @@ export default class Home extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.toggleCreateContractModal = this.toggleCreateContractModal.bind(this);
         this.toggleCreateDeviceModal = this.toggleCreateDeviceModal.bind(this);
+        this.toggleEditContractModal = this.toggleEditContractModal.bind(this);
+        this.toggleEditDeviceModal = this.toggleEditDeviceModal.bind(this);
+        this.toggleArchiveContract = this.toggleArchiveContract.bind(this);
 
         this.state = {
             isLoading: true,
@@ -23,7 +30,10 @@ export default class Home extends React.Component {
             searchValue: "",
             modal: {
                 createContract: false,
+                editContract: [false, ""],
                 createDevice: false,
+                editDevice: [false, ""],
+                archiveContract: [false, "", "no"],
             },
         };
     }
@@ -84,9 +94,34 @@ export default class Home extends React.Component {
         this.setState({ modal });
     }
 
+
     toggleCreateDeviceModal() {
         const { modal } = this.state;
         modal['createDevice'] = !modal['createDevice'];
+        this.setState({ modal });
+    }
+
+
+    toggleEditContractModal(contract) {
+        const { modal } = this.state;
+        let active = modal['editContract'][0];
+        modal['editContract'] = [!active, contract];
+        this.setState({ modal });
+    }
+
+
+    toggleEditDeviceModal(device) {
+        const { modal } = this.state;
+        let active = modal['editDevice'][0];
+        modal['editDevice'] = [!active, device];
+        this.setState({ modal });
+    }
+
+
+    toggleArchiveContract(contract, answer) {
+        const { modal } = this.state;
+        let active = modal['archiveContract'][0];
+        modal['archiveContract'] = [!active, contract, answer];
         this.setState({ modal });
     }
 
@@ -101,7 +136,7 @@ export default class Home extends React.Component {
                     <td>{device.hostname}</td>
                     <td>{device.privateKey}</td>
                     <td>Not Assigned</td>
-                    <td><Button><Glyphicon glyph="edit"/></Button></td>
+                    <td><Button onClick={() => this.toggleEditDeviceModal(device.iotdeviceID)}><Glyphicon glyph="edit"/></Button></td>
                     <td><Button><Glyphicon glyph = "trash"/></Button></td>
                 </tr>
         );
@@ -123,6 +158,13 @@ export default class Home extends React.Component {
                     />
                     <ModalButton onClick={this.toggleCreateDeviceModal} text="Create Device"/>
                     {this.state.modal.createDevice ? <CreateDeviceModal toggle={this.toggleCreateDeviceModal} /> : null}
+                    {this.state.modal.editDevice[0]
+                        ? <EditDeviceModal 
+                            deviceID = {this.state.modal.editDevice[1]}
+                            toggle = {() => this.toggleEditDeviceModal("")}
+                        />
+                        : null
+                    }
                 </div>
                 <Table condensed hover responsive>
                     <thead>
@@ -159,8 +201,8 @@ export default class Home extends React.Component {
                     <td>{contract.humidity}</td>
                     <td>{contract.deliveryDueDate}</td>
                     <td>{contract.contractStatus}</td>
-                    <td><Button><Glyphicon glyph="edit"/></Button></td>
-                    <td><Button><Glyphicon glyph="floppy-remove"/></Button></td>
+                    <td><Button onClick={() => this.toggleEditContractModal(contract.contractID)}><Glyphicon glyph="edit"/></Button></td>
+                    <td><Button onClick={() => this.toggleArchiveContract(contract.contractID, "no")}><Glyphicon glyph="floppy-remove"/></Button></td>
                 </tr>
         )
     }
@@ -181,6 +223,19 @@ export default class Home extends React.Component {
                     />
                     <ModalButton onClick={this.toggleCreateContractModal} text="Create Contract"/>
                     {this.state.modal.createContract ? <CreateContractModal toggle = {this.toggleCreateContractModal}/> : null}
+                    {this.state.modal.editContract[0] 
+                        ? <EditContractModal 
+                            contractID = {this.state.modal.editContract[1]}
+                            toggle = {() => this.toggleEditContractModal("")} 
+                            />
+                        : null
+                    }
+                    {this.state.modal.archiveContract[0]
+                    ? <ArchiveContract
+                        contractID = {this.state.modal.archiveContract[1]}
+                        toggle={this.toggleArchiveContract}/>
+                    : null
+                    }
                 </div>
                 <Table condensed hover responsive>
                     <thead>

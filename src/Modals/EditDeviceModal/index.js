@@ -14,7 +14,6 @@ export default class CrateContractModal extends React.Component {
 
         this.state = {
             contractID: "",
-            deviceID: "",
             hostname: "",
             privateKey: "",
             isLoading: false,
@@ -56,7 +55,7 @@ export default class CrateContractModal extends React.Component {
 
     // TODO: functional validation
     validateForm() {
-        return this.state.hostname.length > 0 && this.state.deviceID.length > 0 && this.state.privateKey > 0;
+        return this.state.hostname.length > 0 && this.state.privateKey > 0;
     }
 
     async componentDidMount() {
@@ -75,24 +74,10 @@ export default class CrateContractModal extends React.Component {
         return (
         <Modal show={true} onHide={this.handleClose} bsSize="large">
             <Modal.Header closeButton>
-                <Modal.Title>Create new device</Modal.Title>
+                <Modal.Title>Edit device {this.props.deviceID}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form horizontal>
-
-                    <FormGroup controlId="deviceID">
-                        <Col componentClass={ControlLabel} sm={3}>Device ID</Col>
-                        <Col sm={5}>
-                            <FormControl 
-                                type="text" 
-                                placeholder="IoTbx00000000007" 
-                                onChange={this.handleChanges} 
-                                value={this.state.deviceID} 
-                                autoFocus
-                            />
-                            <FormControl.Feedback />
-                        </Col>
-                    </FormGroup>
 
                     <FormGroup controlId="hostname">
                         <Col componentClass={ControlLabel} sm={3}>Host Name</Col>
@@ -155,8 +140,8 @@ export default class CrateContractModal extends React.Component {
                                     disabled={!this.validateForm()}
                                     type="submit"
                                     isLoading={this.state.isLoading}
-                                    text="Create device"
-                                    loadingText="Submitting..."
+                                    text="Edit device"
+                                    loadingText="Editing..."
                                 />
                             </Col>
                             <Col sm={4}></Col>
