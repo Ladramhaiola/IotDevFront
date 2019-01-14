@@ -1,0 +1,13 @@
+.ask-btn {
+    display: inline-block;
+    margin: 0 10px 0 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.ask-modal-body {
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+}

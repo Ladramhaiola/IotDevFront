@@ -8,6 +8,7 @@ import CreateDeviceModal from "../Modals/CreateDeviceModal";
 import EditContractModal from "../Modals/EditContractModal";
 import EditDeviceModal from "../Modals/EditDeviceModal";
 import ArchiveContract from "../Modals/ArchiveContract";
+import DeleteDevice from "../Modals/DeleteDevice";
 import Api from "../Api";
 import "./Home.css";
 
@@ -22,6 +23,7 @@ export default class Home extends React.Component {
         this.toggleEditContractModal = this.toggleEditContractModal.bind(this);
         this.toggleEditDeviceModal = this.toggleEditDeviceModal.bind(this);
         this.toggleArchiveContract = this.toggleArchiveContract.bind(this);
+        this.toggleDeleteDevice = this.toggleDeleteDevice.bind(this);
 
         this.state = {
             isLoading: true,
@@ -34,6 +36,7 @@ export default class Home extends React.Component {
                 createDevice: false,
                 editDevice: [false, ""],
                 archiveContract: [false, "", "no"],
+                deleteDevice: [false, "", "no"],
             },
         };
     }
@@ -126,6 +129,14 @@ export default class Home extends React.Component {
     }
 
 
+    toggleDeleteDevice(device, answer) {
+        const { modal } = this.state;
+        let active = modal['deleteDevice'][0];
+        modal['deleteDevice'] = [!active, device, answer];
+        this.setState({ modal });
+    }
+
+
     renderDevicesList(devices) {
         return [{}].concat(devices).map(
             (device, i) =>
@@ -137,7 +148,7 @@ export default class Home extends React.Component {
                     <td>{device.privateKey}</td>
                     <td>Not Assigned</td>
                     <td><Button onClick={() => this.toggleEditDeviceModal(device.iotdeviceID)}><Glyphicon glyph="edit"/></Button></td>
-                    <td><Button><Glyphicon glyph = "trash"/></Button></td>
+                    <td><Button onClick={() => this.toggleDeleteDevice(device.iotdeviceID, "no")}><Glyphicon glyph = "trash"/></Button></td>
                 </tr>
         );
     }
@@ -164,6 +175,12 @@ export default class Home extends React.Component {
                             toggle = {() => this.toggleEditDeviceModal("")}
                         />
                         : null
+                    }
+                    {this.state.modal.deleteDevice[0]
+                    ? <DeleteDevice
+                        deviceID = {this.state.modal.deleteDevice[1]}
+                        toggle={this.toggleDeleteDevice}/>
+                    : null
                     }
                 </div>
                 <Table condensed hover responsive>
