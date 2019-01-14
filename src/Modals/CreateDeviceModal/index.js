@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, FormGroup, Form, FormControl, ControlLabel, Col, Row, Glyphicon } from "react-bootstrap";
+import { Modal, FormGroup, Form, FormControl, ControlLabel, Col, Row, Button } from "react-bootstrap";
 import Api from "../../Api";
 import LoaderButton from "../../LoaderButton";
 import "./styles.css";
@@ -104,6 +104,22 @@ export default class CrateContractModal extends React.Component {
                                 value={this.state.hostname}
                             />
                             <FormControl.Feedback />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId="privateKey">
+                        <Col componentClass={ControlLabel} sm={3}>Private Key</Col>
+                        <Col sm={5}>
+                            <FormControl 
+                                type="text"
+                                placeholder="TDUJKABYUBEIYKJABYUCFAVJ" 
+                                onChange={this.handleChanges} 
+                                value={this.state.privateKey}
+                            />
+                            <FormControl.Feedback />
+                        </Col>
+                        <Col sm={4}>
+                            <Button>Generate key</Button>
                         </Col>
                     </FormGroup>
 
